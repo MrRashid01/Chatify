@@ -1,0 +1,24 @@
+{
+  "name": "realtime-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines":{
+    "node":">=20.0.0"
+  },
+  "scripts": {
+    "build":"npm install --prefix Backend && npm install --prefix Frontend && npm run build --prefix Frontend",
+    "start":"npm run start --prefix Backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrRashid01/Chatify.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MrRashid01/Chatify/issues"
+  },
+  "homepage": "https://github.com/MrRashid01/Chatify#readme"
+}
