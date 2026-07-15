@@ -3,6 +3,7 @@ import { generateToken } from "../lib/utils.js";
 import bcrypt from "bcryptjs";
 import { sendWelcomeEmail } from "../emails/emailHandlers.js"; 
 import {ENV} from "../lib/env.js";
+import cloudinary from "../lib/cloudinary.js";
 
 export const signup=async(req,res)=>{
     const {fullName,email,password}=req.body;
@@ -92,3 +93,39 @@ export const logout=(_,res)=>{
      res.cookie("jwt","",{maxAge:0});
      return res.status(200).json({message:"Logged out successfully"});
 }
+
+export const updateProfile = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { fullName, email, profilePic } = req.body;
+
+    const updateData = {
+      fullName,
+      email,
+    };
+
+    // Upload image only if one is provided
+    if (profilePic) {
+      const uploadedImage = await cloudinary.uploader.upload(profilePic, {
+        folder: "profile_pics",
+        width: 150,
+        crop: "scale",
+      });
+
+      updateData.profilePic = uploadedImage.secure_url;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      updateData,
+      { new: true }
+    );
+
+    return res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error("Error during profile update:", error);
+    return res.status(500).json({
+      message: error.message || "Server error",
+    });
+  }
+};
