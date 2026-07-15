@@ -6,10 +6,13 @@ import path from "path";
 import { connect } from "http2";
 import { connectDB } from "./lib/db.js";
 import { ENV } from "./lib/env.js";
+import cookieParser from "cookie-parser";
 
 const app=express();
 
+//payload to large size
 app.use(express.json());
+app.use(cookieParser());
 
 
 const __dirname= path.resolve();
